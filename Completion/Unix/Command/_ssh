@@ -83,7 +83,8 @@ _ssh () {
     _arguments -s \
       '-c[identity is subject to confirmation via SSH_ASKPASS]' \
       '-D[delete all identities]' \
-      '-d[remove identity]' \
+      '-d[remove identity]:identity' \
+      '-E[specify hash algorithm for displaying key fingerprints]:hash (default\: sha256):(md5 sha256)' \
       '-e[remove keys provided by the PKCS#11 shared library]:library:' \
       '-k[load plain private keys only and skip certificates]' \
       '-L[lists public key parameters of all identities in the agent]'\
@@ -99,7 +100,9 @@ _ssh () {
     _arguments -s \
       '(-k)-a[UNIX-domain socket to bind agent to]:UNIX-domain socket:_files' \
       '(-k -s)-c[force csh-style shell]' \
+      '(-k)-D[foreground mode]' \
       '(-k)-d[debug mode]' \
+      '(-k)-E[specify hash algorithm for displaying key fingerprints]:hash (default\: sha256):(md5 sha256)' \
       '-k[kill current agent]' \
       '(-k -c)-s[force sh-style shell]' \
       '-t[set default maximum lifetime for identities]:maximum lifetime (in seconds or time format):' \
