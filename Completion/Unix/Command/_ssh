@@ -139,7 +139,7 @@ _ssh () {
       '-f[specify public or private key file]:public/private key file:_files' # XXX
       - mode-F
       '-F[search for specified hostname in known_hosts file]:hostname:_hosts' # XXX
-      '-f[specify known_hosts file]:known hosts:_files' # XXX
+      '-f[specify known_hosts file]:known_hosts file:_ssh_known_hosts'
       '-l[XXX]'
       - mode-G
       '-G[generate candidate primes for DH-GEX]:output file:_files'
@@ -149,7 +149,7 @@ _ssh () {
       '-S[specify start point for generating candidates]:start point (in hex)'
       - mode-H
       '-H[hash known_hosts file]'
-      '-f[specify known_hosts file]:known hosts:_files' # XXX
+      '-f[specify known_hosts file]:known_hosts file:_ssh_known_hosts'
       - mode-i
       '-i[import key to OpenSSH format]'
       '-m[specify key format]:key format (default\: RFC4716):((RFC4716\:"RFC 4716/SSH2 public or private key" PKCS8\:"PEM PKCS8 public key" PEM\:"PEM public key"))'
@@ -179,7 +179,7 @@ _ssh () {
       '-f[specify KRL file]:KRL file:_files' # XXX
       - mode-R
       '-R[remove hostname from known_hosts file]:hostname:_hosts' # XXX
-      '-f[specify known_hosts file]:known hosts:_files' # XXX
+      '-f[specify known_hosts file]:known_hosts file:_ssh_known_hosts'
       - mode-r
       '-r[print SSHFP resource record for specified hostname]:hostname:_hosts' # XXX
       '-f[specify public key file]:public key file:_files' # XXX
@@ -689,6 +689,17 @@ _ssh () {
 
 _ssh_users () {
   _combination -s '[:@]' my-accounts users-hosts users "$@"
+}
+
+_ssh_known_hosts () {
+  local known_hosts=(
+    ~/.ssh/known_hosts(|2)(N)
+    /etc/ssh/ssh_known_hosts(|2)(N)
+  )
+
+  _alternative \
+    'known-hosts:known_hosts file:compadd -f -a known_hosts' \
+    'files:file:_files'
 }
 
 _ssh_hosts () {
