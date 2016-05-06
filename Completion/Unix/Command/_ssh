@@ -110,24 +110,103 @@ _ssh () {
     return
     ;;
   ssh-keygen)
-    cmds=( -p -i -e -y -c -l -B -D -U )
-    _arguments -s \
-      '-q[silence ssh-keygen]' \
-      "($cmds -P)-b[specify number of bits in key]:bits in key" \
-      "($cmds -P)-t[specify the type of the key to create]:key type:(rsa1 rsa dsa ecdsa ed25519)" \
-      "(${cmds#-p })-N[provide new passphrase]:new passphrase" \
-      "($cmds -b -t)-C[provide new comment]:new comment" \
-      '(-D)-f[key file]:key file:_files' \
-      '('${(j. .)cmds:#-[pc]}' -t -b)-P[provide old passphrase]:old passphrase' \
-      "($cmds -q -b -t -C)-p[change passphrase of private key file]" \
-      "($cmds -q -b -t -N -C -P)-i[import key to OpenSSH format]" \
-      "($cmds -q -b -t -N -C -P)-e[export key to SECSH file format]" \
-      "($cmds -q -b -t -N -C -P)-y[get public key from private key]" \
-      "($cmds -q -b -t -N)-c[change comment in private and public key files]" \
-      "($cmds -q -b -t -N -C -P)-l[show fingerprint of key file]" \
-      "($cmds -q -b -t -N -C -P)-B[show the bubblebabble digest of key]" \
-      "($cmds -q -b -t -N -C -P -f)-D[download key stored in smartcard reader]:reader" \
-      "($cmds -q -b -t -N -C -P)-U[upload key to smartcard reader]:reader"
+    local specs=(
+      '-q[silence ssh-keygen]'
+      '(-q)*-v[verbose mode (multiple increase verbosity, up to 3)]'
+      - mode-default
+      '-b[specify number of bits in key]:bits in key' # XXX
+      '-t[specify the type of key to create]:key type:(rsa1 rsa dsa ecdsa ed25519)'
+      '-N[provide new passphrase]:new passphrase'
+      '-C[provide new comment]:new comment'
+      '-a[specify number of KDF rounds]:rounds'
+      '-o[save private key in new OpenSSH format]'
+      '-f[specify output key file]:key file:_files'
+      - mode-A
+      '-A[generate host keys with default settings]'
+      - mode-B
+      '-B[show the bubblebabble digest of key]'
+      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      - mode-c
+      '-c[change comment in private and public key files]'
+      '-P[provide old passphrase]:old passphrase'
+      '-C[provide new comment]:new comment'
+      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      - mode-D
+      '-D[download key stored in smartcard reader]:reader'
+      - mode-e
+      '-e[export key to another file format]'
+      '-m[specify key format]:key format (default\: RFC4716):((RFC4716\:"RFC 4716/SSH2 public or private key" PKCS8\:"PEM PKCS8 public key" PEM\:"PEM public key"))'
+      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      - mode-F
+      '-F[search for specified hostname in known_hosts file]:hostname:_hosts' # XXX
+      '-f[specify known_hosts file]:known hosts:_files' # XXX
+      '-l[XXX]'
+      - mode-G
+      '-G[generate candidate primes for DH-GEX]:output file:_files'
+      '(-q)*-v[verbose mode (multiple increase verbosity, up to 3)]'
+      '-b[XXX]'
+      '-M[specify amount of memory to use]:memory (megabytes)'
+      '-S[specify start point for generating candidates]:start point (in hex)'
+      - mode-H
+      '-H[hash known_hosts file]'
+      '-f[specify known_hosts file]:known hosts:_files' # XXX
+      - mode-i
+      '-i[import key to OpenSSH format]'
+      '-m[specify key format]:key format (default\: RFC4716):((RFC4716\:"RFC 4716/SSH2 public or private key" PKCS8\:"PEM PKCS8 public key" PEM\:"PEM public key"))'
+      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      - mode-k
+      '-k[generate key revocation list (KRL) file]'
+      '-f[specify KRL file]:KRL file:_files'
+      '-u[update existing KRL]'
+      '-s[specify path to CA public key]:public key file:_files' # XXX
+      '-k[specify KRL version number]:version number'
+      '*:key or certificate:_files' # XXX
+      - mode-L
+      '-L[print contents of certificates]'
+      '-f[specify certificate file]:certificate file:_files' # XXX
+      - mode-l
+      '-l[show fingerprint of public key file]'
+      '-v[show ASCII art representation of key]'
+      '-E[specify hash algorithm for displaying key fingerprints]:hash (default\: sha256):(md5 sha256)'
+      '-f[specify public key file]:public key file:_files' # XXX
+      - mode-p
+      "-p[change passphrase of private key file]"
+      '-P[provide old passphrase]:old passphrase'
+      '-N[provide new passphrase]:new passphrase'
+      '-f[specify private key file]:private key file:_files' # XXX
+      - mode-Q
+      '-Q[test whether keys have been revoked in KRL]'
+      '-f[specify KRL file]:KRL file:_files' # XXX
+      - mode-R
+      '-R[remove hostname from known_hosts file]:hostname:_hosts' # XXX
+      '-f[specify known_hosts file]:known hosts:_files' # XXX
+      - mode-r
+      '-r[print SSHFP resource record for specified hostname]:hostname:_hosts' # XXX
+      '-f[specify public key file]:public key file:_files' # XXX
+      '-g[use generic DNS format]'
+      - mode-s
+      '-s[certify (sign) public key using specified CA key]:CA key' # XXX
+      '-I[specify key identity]:certificate identity' # XXX
+      '-h[create host certificate instead of user certificate]'
+      # XXX -n: _alternative, separate by commas
+      '-n[specify principals to include in certificate]:user or host name:_users'
+      # XXX options
+      '*-O[specify certificate option]:option'
+      '-V[specify validity interval]:expiration date (YYYYMMDD) or time interval (YYYYMMDD\:YYYYMMDD)' # XXX
+      '-z[specify serial number to embed in certificate]:serial number (default\: 0)'
+      '*:' # XXX
+      - mode-T
+      '-T[test DH-GEX candidate primes generated with -G]:output file:_files'
+      '-J[exit after screening specified number of lines]:number of lines'
+      '-j[start screening at specified line number]:line number'
+      '-K[write last line processed to specified file]:checkpoint file:_files'
+      '-W[specify generator for testing candidate moduli]:generator' # XXX
+      - mode-y
+      '-y[get public key from private key]'
+      '-f[specify private key file]:private key file:_files' # XXX
+    )
+
+    _arguments -s : $specs
     return
     ;;
   sftp)
