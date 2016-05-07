@@ -18,7 +18,7 @@ _ssh () {
     # for protocol version 2, this can be a comma-separated list
     '-c+[select encryption cipher]:encryption cipher:(idea des 3des blowfish arcfour tss none)'
     '-F+[specify alternate config file]:config file:_files'
-    '*-i+[select identity file]:SSH identity file:_files -g "*(-.^AR)"'
+    '*-i+[specify private key file]:private key file:_ssh_keys --private'
     '*-o+[specify extra options]:option string:->option'
   )
   common_transfer=(
@@ -83,7 +83,7 @@ _ssh () {
     _arguments -s \
       '-c[identity is subject to confirmation via SSH_ASKPASS]' \
       '-D[delete all identities]' \
-      '-d[remove identity]:identity' \
+      '-d[remove identity]:identity:_ssh_keys --active' \
       '-E[specify hash algorithm for displaying key fingerprints]:hash (default\: sha256):(md5 sha256)' \
       '-e[remove keys provided by the PKCS#11 shared library]:library:' \
       '-k[load plain private keys only and skip certificates]' \
@@ -93,7 +93,7 @@ _ssh () {
       '-t[set maximum lifetime for identity]:maximum lifetime (in seconds or time format):' \
       '-X[unlock the agent]' \
       '-x[lock the agent with a password]' \
-      '*:SSH identity file:_files'
+      '*:private key:_ssh_keys --inactive'
     return
     ;;
   ssh-agent)
@@ -125,18 +125,18 @@ _ssh () {
       '-A[generate host keys with default settings]'
       - mode-B
       '-B[show the bubblebabble digest of key]'
-      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      '-f[specify public or private key file]:public/private key file:_ssh_keys'
       - mode-c
       '-c[change comment in private and public key files]'
       '-P[provide old passphrase]:old passphrase'
       '-C[provide new comment]:new comment'
-      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      '-f[specify public or private key file]:public/private key file:_ssh_keys'
       - mode-D
       '-D[download key stored in smartcard reader]:reader'
       - mode-e
       '-e[export key to another file format]'
       '-m[specify key format]:key format (default\: RFC4716):((RFC4716\:"RFC 4716/SSH2 public or private key" PKCS8\:"PEM PKCS8 public key" PEM\:"PEM public key"))'
-      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      '-f[specify public or private key file]:public/private key file:_ssh_keys'
       - mode-F
       '-F[search for specified hostname in known_hosts file]:hostname:_hosts' # XXX
       '-f[specify known_hosts file]:known_hosts file:_ssh_known_hosts'
@@ -153,7 +153,7 @@ _ssh () {
       - mode-i
       '-i[import key to OpenSSH format]'
       '-m[specify key format]:key format (default\: RFC4716):((RFC4716\:"RFC 4716/SSH2 public or private key" PKCS8\:"PEM PKCS8 public key" PEM\:"PEM public key"))'
-      '-f[specify public or private key file]:public/private key file:_files' # XXX
+      '-f[specify public or private key file]:public/private key file:_files'
       - mode-k
       '-k[generate key revocation list (KRL) file]'
       '-f[specify KRL file]:KRL file:_files'
@@ -165,15 +165,15 @@ _ssh () {
       '-L[print contents of certificates]'
       '-f[specify certificate file]:certificate file:_files' # XXX
       - mode-l
-      '-l[show fingerprint of public key file]'
+      '-l[show fingerprint of public key]'
       '-v[show ASCII art representation of key]'
       '-E[specify hash algorithm for displaying key fingerprints]:hash (default\: sha256):(md5 sha256)'
-      '-f[specify public key file]:public key file:_files' # XXX
+      '-f[specify public key file]:public key file:_ssh_keys --public'
       - mode-p
       "-p[change passphrase of private key file]"
       '-P[provide old passphrase]:old passphrase'
       '-N[provide new passphrase]:new passphrase'
-      '-f[specify private key file]:private key file:_files' # XXX
+      '-f[specify private key file]:private key file:_ssh_keys --private'
       - mode-Q
       '-Q[test whether keys have been revoked in KRL]'
       '-f[specify KRL file]:KRL file:_files' # XXX
@@ -181,8 +181,8 @@ _ssh () {
       '-R[remove hostname from known_hosts file]:hostname:_hosts' # XXX
       '-f[specify known_hosts file]:known_hosts file:_ssh_known_hosts'
       - mode-r
-      '-r[print SSHFP resource record for specified hostname]:hostname:_hosts' # XXX
-      '-f[specify public key file]:public key file:_files' # XXX
+      '-r[print SSHFP resource record for specified hostname]:hostname:_hosts'
+      '-f[specify public key file]:public key file:_ssh_keys --public'
       '-g[use generic DNS format]'
       - mode-s
       '-s[certify (sign) public key using specified CA key]:CA key' # XXX
@@ -203,7 +203,7 @@ _ssh () {
       '-W[specify generator for testing candidate moduli]:generator' # XXX
       - mode-y
       '-y[get public key from private key]'
-      '-f[specify private key file]:private key file:_files' # XXX
+      '-f[specify private key file]:private key file:_ssh_keys --private'
     )
 
     _arguments -s : $specs
@@ -218,10 +218,15 @@ _ssh () {
       '-s[SSH2 subsystem or path to sftp server on the remote host]' \
       '1:file:->rfile' '*:file:->file' "$common[@]" "$common_transfer[@]" && ret=0
     ;;
-  (ssh-copy-id)
-    _arguments \
-      '-i:SSH identity file:_files' \
-      ':remote host name:->userhost' \
+  ssh-copy-id)
+    _arguments -C -s : \
+      '-i[specify public key file]:public key file:_ssh_keys --public' \
+      "-f[forced mode: don't check if keys are already present]" \
+      '-n[dry-run: print keys that would be installed]' \
+      '*-o+[specify extra options]:option string:->option' \
+      '-p+[specify port on remote host]:port number on remote host' \
+      '(- *)-h[print usage summary]' \
+      ':remote host name:->userhost' && ret=0
     ;;
   esac
 
@@ -692,11 +697,7 @@ _ssh_users () {
 }
 
 _ssh_known_hosts () {
-  local known_hosts=(
-    ~/.ssh/known_hosts(|2)(N)
-    /etc/ssh/ssh_known_hosts(|2)(N)
-  )
-
+  local known_hosts=( {~/.ssh/,/etc/ssh/ssh_}known_hosts(|2)(N) )
   _alternative \
     'known-hosts:known_hosts file:compadd -f -a known_hosts' \
     'files:file:_files'
@@ -736,6 +737,75 @@ _ssh_hosts () {
         compadd -M 'm:{a-zA-Z}={A-Za-z} r:|.=* r:|=*' "$@" $config_hosts
     fi
   fi
+}
+
+# _ssh_keys [--public|--active] [--private|--inactive]
+#   --public     complete public keys
+#   --active     complete public keys loaded in ssh-agent
+#   --private    complete private keys
+#   --inactive   complete private keys not loaded in ssh-agent
+# With no options, complete both public and private keys.
+_ssh_keys () {
+    local file
+    local -a private_keys public_keys active_keys inactive_keys
+    readonly public_pat='(#b)(#s)(ssh-dss|ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256) ([^ ]#)*(#e)'
+    readonly private_pat='(#s)-----BEGIN * PRIVATE KEY-----(#e)'
+
+    # Format of ssh-add -L is `<key type> <public key> <comment>`. Strip out
+    # <key type> and <comment>, leaving the list of public keys in ssh-agent.
+    readonly -a loaded_keys=( ${${${(f)"$(ssh-add -L)"}#* }%% *} )
+
+    # Find keys in ~/.ssh and /etc/ssh by looking for files with the right header.
+    for file in {~/.ssh/**/*,/etc/ssh/ssh_host_*}(-.N); do
+        # Skip unreadable private host keys in /etc/ssh/.
+        [[ -r $file ]] || continue
+
+        # local file_header=$(head -n1 $file)
+        local file_header=${${(f):-"$(< $file)" $'\n'}[1]}
+        if [[ $file_header == $~public_pat ]]; then
+            public_keys+=( $file )
+
+            local public_key=$match[2]
+            if [[ -n $loaded_keys[(re)$public_key] ]]; then
+                active_keys+=( $file )
+            fi
+        elif [[ $file_header == $~private_pat ]]; then
+            private_keys+=( $file )
+
+            # If this private key has a corresponding public key in ${file}.pub...
+            if [[ -r ${file}.pub ]] &&
+               [[ ${${(f):-"$(< ${file}.pub)" $'\n'}[1]} == $~public_pat ]]; then
+                # ...and it's not loaded in ssh-agent, then it's inactive.
+                local public_key=$match[2]
+                if [[ -z $loaded_keys[(re)$public_key] ]]; then
+                    inactive_keys+=( $file )
+                fi
+            fi
+        fi
+    done
+
+    local -A opts
+    zparseopts -D -E -A opts '-private' '-public' '-active' '-inactive'
+
+    # Default to --public and --private if nothing is specified.
+    if (( $#opts == 0 )) ; then
+        opts[--public]=1 && opts[--private]=1
+    fi
+
+    local -a specs
+    if (( $+opts[--active] )); then
+        specs+=( 'ssh-public-keys:public key file:compadd -f -a active_keys' )
+    elif (( $+opts[--public] )); then
+        specs+=( 'ssh-public-keys:public key file:compadd -f -a public_keys' )
+    fi
+
+    if (( $+opts[--inactive] )); then
+        specs+=( 'ssh-private-keys:private key file:compadd -f -a inactive_keys' )
+    elif (( $+opts[--private] )); then
+        specs+=( 'ssh-private-keys:private key file:compadd -f -a private_keys' )
+    fi
+
+    _alternative $specs 'files:file:_files'
 }
 
 _ssh "$@"
