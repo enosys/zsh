@@ -247,6 +247,9 @@ _ssh () {
         (#i)(afstokenpassing|batchmode|canonicalizefallbacklocal|challengeresponseauthentication|checkhostip|clearallforwardings|compression|enablesshkeysign|exitonforwardfailure|fallbacktorsh|forward(agent|x11)|forwardx11trusted|gatewayports|gssapiauthentication|gssapidelegatecredentials|gssapitrustdns|hashknownhosts|hostbasedauthentication|identitiesonly|kbdinteractiveauthentication|(tcp|)keepalive|nohostauthenticationforlocalhost|passwordauthentication|permitlocalcommand|proxyusefdpass|pubkeyauthentication|rhosts(|rsa)authentication|rsaauthentication|streamlocalbindunlink|usersh|kerberos(authentication|tgtpassing)|useprivilegedport|visualhostkey)=*)
           _wanted values expl 'truth value' compadd yes no && ret=0
           ;;
+        (#i)addkeystoagent=*)
+          _wanted values expl 'truthish value' compadd yes no ask confirm && ret=0
+          ;;
         (#i)addressfamily=*)
           _wanted values expl 'address family' compadd any inet inet6 && ret=0
           ;;
@@ -264,6 +267,10 @@ _ssh () {
           ;;
         (#i)canonicalizepermittedcnames=*)
           _message -e 'CNAME rule list (source_domain_list:target_domain_list, each pattern list comma separated)' && ret=0
+          ;;
+        (#i)certificatefile=*)
+          _description files expl 'certificate file'
+          _files "$expl[@]" && ret=0
           ;;
         (#i)ciphers=*)
           state=ciphers
@@ -466,6 +473,7 @@ _ssh () {
         # old options are after the empty "\"-line
         _wanted values expl 'configure file option' \
             compadd -M 'm:{a-z}={A-Z}' -q -S '=' - \
+                AddKeysToAgent \
                 AddressFamily \
                 BatchMode \
                 BindAddress \
@@ -476,6 +484,7 @@ _ssh () {
                 CanonicalizePermittedCNAMEs \
                 ChallengeResponseAuthentication \
                 CheckHostIP \
+                CertificateFile \
                 Cipher \
                 Ciphers \
                 ClearAllForwardings \
