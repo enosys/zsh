@@ -620,9 +620,8 @@ _ssh () {
           $(_call_program ssh-ciphers ssh -Q cipher) && ret=0
       ;;
     macs)
-      _values -s , 'MAC algorithms' hmac-md5 hmac-sha1 umac-64@openssh.com \
-          hmac-ripemd160 hmac-sha1-96 hmac-md5-96 hmac-sha2-256 \
-          hmac-sha2-256-96 hmac-sha2-512 hmac-sha2-512-96 && ret=0
+      _values -s , 'MAC algorithms' \
+          $(_call_program ssh-macs ssh -Q mac) && ret=0
       ;;
     command)
       shift 1 words
