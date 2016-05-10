@@ -24,7 +24,7 @@ if _pick_variant gnu=GNU unix --version; then
     '(1 2 -)'{-V,--version}'[print version info]' 
     '(1 2 -)--help[display usage info]'
     '(-V --version --help -f --file)'{-f,--file=}'[specify raw tape device]:tape device:_files'
-    '(-V --version --help)--rsh-command=[specify remote shell command]:rsh command:_command_names -e'
+    '(-V --version --help)--rsh-command=[specify remote shell command]:rsh command: _command_names -e'
   )
   # should really allow remote user@host for tape device
   cmds+=(

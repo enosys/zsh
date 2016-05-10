@@ -26,7 +26,7 @@ if [[ $state == options ]]; then
     cache_stat_timeout:seconds: \
     cache_dir_timeout:seconds: \
     cache_link_timeout:seconds: \
-    'ssh_command:ssh command:_command_names' \
+    'ssh_command:ssh command: _command_names -e' \
     directport:port: \
     'SSHOPT:ssh option:' \
     default_permissions allow_other allow_root kernel_cache large_read direct_io \

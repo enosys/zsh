@@ -5,7 +5,7 @@ local -a cmd common common_mem_null \
   args args_{addrcheck,memcheck,cachegrind,helgrind,lackey,massif,none}
 
 cmd=(
-  '1:command name:_command_names -e'
+  '1:command name: _command_names -e'
   '*::args :_normal'
 )
 
@@ -105,7 +105,7 @@ _arguments -C ${(P)args} $cmd \
   '--suppressions=-[suppress errors described in specified file]:file:_files' \
   '--gen-suppressions=-[print suppressions for errors detected]:enable:(yes no)' \
   '--db-attach=-[start debugger when errors detected]:enable:(yes no)' \
-  '--db-command=-[specify command to start debugger]:command:_command_names -e' \
+  '--db-command=-[specify command to start debugger]:command: _command_names -e' \
   '--input-fd=-[specify file descriptor for input]:file descriptor:_file_descriptors' \
   '--max-stackframe=-[assume stack switch for SP changes larger than specified number of bytes]:bytes' \
   && return

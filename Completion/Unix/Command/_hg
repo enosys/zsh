@@ -456,7 +456,7 @@ _hg_cmd_bisect() {
   '(--good -g --bad -b --skip -s --reset -r)'{-g,--good}'[mark changeset good]'::revision:_hg_tags \
   '(--good -g --bad -b --skip -s --reset -r)'{-b,--bad}'[mark changeset bad]'::revision:_hg_tags \
   '(--good -g --bad -b --skip -s --reset -r)'{-s,--skip}'[skip testing changeset]' \
-  '(--command -c --noupdate -U)'{-c+,--command=}'[use command to check changeset state]':commands:_command_names \
+  '(--command -c --noupdate -U)'{-c+,--command=}'[use command to check changeset state]:commands: _command_names -e' \
   '(--command -c --noupdate -U)'{-U,--noupdate}'[do not update to target]'
 }
 

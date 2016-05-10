@@ -30,7 +30,7 @@ _arguments -C -s -S -A "-*" \
   '-M[specifies module to use for formatting]:module:_perl_modules' \
   '-w[specify option to formatter]:option' \
   '-X[use an index if present]' \
-  '-n+[specify replacement for nroff]:nroff replacement:_command_names -e' \
+  '-n+[specify replacement for nroff]:nroff replacement: _command_names -e' \
   '-r[recursive search]' \
   '-i[ignore case]' \
   "$args[@]" && ret=0

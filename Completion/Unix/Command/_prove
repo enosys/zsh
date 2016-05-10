@@ -39,7 +39,7 @@ _arguments \
   '*-I=[library paths to include]:libdir:_directories' \
   '*-P=[load plugin]:plugin:' \
   '*-M=[load a module]:module:_perl_m_opt' \
-  {-e,--exec}'[interpreter to run the tests]:program: _command_names '{-e,--exec}':*::program arguments: _normal' \
+  {-e,--exec}'[interpreter to run the tests]:program: _command_names -e:*::program arguments: _normal' \
   '--harness=[define test harness]:harness:' \
   '--formatter=[result formatter]:formatter:' \
   '--source=[load or configure a SourceHandler]:source:' \

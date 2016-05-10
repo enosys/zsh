@@ -104,7 +104,7 @@ fi
   '--keyserver-options[specify keyserver options]:options'
   '--import-options[specify options for importing keys]:options'
   '--export-options[specify options for exporting keys]:options'
-  '--photo-viewer:command:_command_names -e'
+  '--photo-viewer:command: _command_names -e'
   '--exec-path:path:_dir_list'
   '--show-keyring[display keyring name when listing keys]'
   '--secret-keyring[add specified file to list of secret keyrings]:file:_files'

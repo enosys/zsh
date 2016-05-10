@@ -27,7 +27,7 @@ _ssh () {
     '-p[preserve modification times, access times and modes]'
     '-q[disable progress meter and warnings]'
     '-r[recursively copy directories (follows symbolic links)]'
-    '-S+[specify ssh program]:path to ssh:_command_names -e' \
+    '-S+[specify ssh program]:path to ssh: _command_names -e' \
     '-v[verbose mode]'
   )
 
@@ -300,7 +300,7 @@ _ssh () {
           ;;
         (#i)localcommand=*)
           _description commands expl 'run command locally after connecting'
-          _command_names && ret=0
+          _command_names -e && ret=0
           ;;
         (#i)loglevel=*)
           _values 'log level' QUIET FATAL ERROR INFO VERBOSE\

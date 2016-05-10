@@ -135,7 +135,7 @@ while
 	'--gid-owner[match packet by ggroup id of creating process]:group id'
 	'--pid-owner[match packet by process id of creating process]:process id:_pids'
 	'--sid-owner[match packet by session id of creating process]:session id'
-	'--cmd-owner[match packet by name of creating command]:command:_command_names -e'
+	'--cmd-owner[match packet by name of creating command]:command: _command_names -e'
       )
     ;;
     physdev)
@@ -182,7 +182,7 @@ _arguments -C -s \
   '(-n --numeric)'{-n,--numeric}'[print IP addresses and port numbers in numeric format]' \
   '(-x --exact)'{-x,--exact}'[expand numbers (display exact values)]' \
   '--line-numbers[print line numbers when listing]' \
-  '--modprobe=[specify command to load modules with]:command:_command_names -e' \
+  '--modprobe=[specify command to load modules with]:command: _command_names -e' \
   "($cmds)*"{-m,--match}'[extended match (may load extension)]:extension:(ah conntrack dscp esp helper icmp length limit mac mark multiport owner physdev pkttype state tcp tos ttl udp unclean)' \
   "$args[@]" && ret=0
 

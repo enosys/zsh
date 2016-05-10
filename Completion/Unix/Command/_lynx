@@ -39,7 +39,7 @@ _arguments -C \
   '-display_charset=[charset for the terminal output]:character set:' \
   "-dont_wrap_pre[inhibit wrapping of text in <pre> when -dump'ing and -crawl'ing, mark wrapped lines in interactive session (off)]" \
   '-dump[dump the first file to stdout and exit]' \
-  '-editor=[enable edit mode with specified editor]:editor:_command_names -e' \
+  '-editor=[enable edit mode with specified editor]:editor: _command_names -e' \
   '-emacskeys[enable emacs-like key movement (off)]' \
   "-enable_scrollback[toggles compatibility with comm programs' scrollback keys (may be incompatible with some curses packages) (off)]" \
   '-error_file=[write the HTTP status code here]:error file:_files' \
