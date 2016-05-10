@@ -8,7 +8,7 @@ _xt_arguments \
   '-bcn:time text cursor is on when blinking (milliseconds):' \
   '-cc:character class:' \
   '-cr:text cursor color:_x_color' \
-  '-e:program: _command_names -e:*::program arguments: _normal' \
+  '-e:program: _shells:*::program arguments: _normal' \
   '-fa:font pattern:_xft_fonts' \
   '-fb:bold font:_x_font' \
   '-fi:icon font:_x_font' \

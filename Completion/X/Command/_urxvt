@@ -48,7 +48,7 @@ _x_arguments \
   '-lsp:number of extra pixels between rows' \
   '-letsp:letter spacing adjustment' \
   '-mod:meta modifier:_x_modifier' \
-  '-e:program: _command_names -e:*::program arguments: _normal' \
+  '-e:program: _shells:*::program arguments: _normal' \
   '-help[print help]' \
   '--help[list long options]' $long_args && ret=0
 

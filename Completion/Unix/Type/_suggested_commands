@@ -1,0 +1,12 @@
+#autoload
+
+local -A opts; opts=( -t suggested-commands -d "suggested command" )
+
+zparseopts -D -E -K -A opts '-t:' '-d:'
+
+# Only use command names that exist in $PATH.
+local suggestions=( ${${commands:t}:*argv} )
+
+_alternative \
+    "${opts[-t]}:${opts[-d]}:compadd -f -a suggestions" \
+    'commands:command: _command_names -e'

@@ -15,13 +15,13 @@ if _pick_variant gnu="Free Software Foundation" unix --version; then
     '(-p --preserve-environment)-m[do not reset environment]'
     '(-m --preserve-environment)-p[do not reset environment]'
     '(-m -p)--preserve-environment[do not reset environment]'
-    '(--shell)-s[run the specified shell]:shell:->shell'
-    '(-s)--shell=-[run the specified shell]:shell:->shell'
+    '(--shell)-s[run the specified shell]:shell: _shells'
+    '(-s)--shell=-[run the specified shell]:shell: _shells'
   )
 else
   args=(
     '-l[use a login shell]'
-    '-s[run the specified shell]:shell:->shell'
+    '-s[run the specified shell]:shell:_shells'
   )
   case $OSTYPE in
   freebsd*)
@@ -58,10 +58,6 @@ case $state in
     (command)
         compset -q
         _normal
-        return
-        ;;
-    (shell)
-        _wanted -C $context shells expl shell compadd ${(f)^"$(</etc/shells)"}(N)
         return
         ;;
     (rest)

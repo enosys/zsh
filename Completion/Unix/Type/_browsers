@@ -1,0 +1,7 @@
+#compdef -value-,BROWSER,-default-
+
+local browsers=(
+    ${BROWSER:t} chrome chromium epiphany firefox konqueror links lynx opera w3m
+)
+
+_suggested_commands -t browsers -d browser -- $browsers "$@"
