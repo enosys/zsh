@@ -12,7 +12,7 @@ _arguments -C \
   '(--predict -n)-a[synonym for --predict=always]' \
   '(--predict -a)-n[synonym for --predict=never]' \
   '--server[specify command to run server helper]:remote file:_files' \
-  '--client[specify command to run client helper]:_command_names -e' \
+  '--client[specify command to run client helper]: _command_names -e' \
   '1:remote host name:->userhost' \
   '*:::args:_normal' && return
 

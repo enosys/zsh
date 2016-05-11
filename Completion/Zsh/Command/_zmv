@@ -11,7 +11,7 @@ _arguments -s -S -A '-*' \
   '(-C -M)-s[symbolic, passed down to ln]' \
   '-v[verbose: print line as it is executed]' \
   '-o[specify options to pass to underlying command]: opt string' \
-  '(-M -C -L -s)-p+[specify program to run instead of cp, ln or mv]:program:_command_names -e' \
+  '(-M -C -L -s)-p+[specify program to run instead of cp, ln or mv]:program: _command_names -e' \
   '(-W)-w[implicitly add parenthesis to wildcards in the pattern]' \
   '(-w)-W[like -w, but turn wildcards in replacement patterns into references]' \
   '1:source pattern:_files' \

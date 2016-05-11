@@ -10,11 +10,11 @@ _arguments \
   '(-m --mixer)'{-m,--mixer=}':state:(on off)' \
   '(-o --osd)'{-o,--osd=}':state:(on off)' \
   '(-p --poll)'{-p,--poll=}':delay in microseconds:' \
-  '(-t --thinkpad)'{-t,--thinkpad=}':command to execute:_command_names' \
-  '(-H --home)'{-H,--home=}':command to execute:_command_names' \
-  '(-S --search)'{-S,--search=}':command to execute:_command_names' \
-  '(-M --mail)'{-M,--mail=}':command to execute:_command_names' \
-  '(-W --wireless)'{-W,--wireless=}':command to execute:_command_names' \
-  '(-C --callback)'{-C,--callback=}':command to execute:_command_names' \
+  '(-t --thinkpad)'{-t,--thinkpad=}':command to execute: _command_names -e' \
+  '(-H --home)'{-H,--home=}':command to execute: _command_names -e' \
+  '(-S --search)'{-S,--search=}':command to execute: _command_names -e' \
+  '(-M --mail)'{-M,--mail=}':command to execute: _command_names -e' \
+  '(-W --wireless)'{-W,--wireless=}':command to execute: _command_names -e' \
+  '(-C --callback)'{-C,--callback=}':command to execute: _command_names -e' \
   '(-v --verbose)'{-v,--verbose=}'[print information about pressed keys]'
 

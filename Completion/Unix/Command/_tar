@@ -100,7 +100,7 @@ if [[ "$PREFIX" = --* ]]; then
   # ...long options after `--'.
 
   _arguments -- '--owner*:user:_users' \
-                 '*=(PROG|COMMAND)*:program:_command_names -e' \
+                 '*=(PROG|COMMAND)*:program: _command_names -e' \
 		 '*=ARCHIVE*:archive: _tar_archive' \
 		 '*=NAME*:file:_files' \
 		 '*=DIR*:directory:_files -/' \

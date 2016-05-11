@@ -62,9 +62,10 @@ elif compset -P '\('; then
       'e[interpret * or @ as a single key]'
     );;
     (|scalar*)) flags=(
-      'w[make subscripting work on words of scalar]'
-      's[specify word separator]'
-      'p[recognise escape sequences in subsequent s flag]'
+      '(w s p)f[make subscripting work on lines of scalar]'
+      '(f)w[make subscripting work on words of scalar]'
+      '(f)s[specify word separator]'
+      '(f)p[recognise escape sequences in subsequent s flag]'
     );&
     array*) flags=($flags
       'e[interpret * or @ as a single key and use plain string matching]'

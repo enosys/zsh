@@ -71,7 +71,7 @@ case $words[1] in
       '(-z --snapshot)-P[create a diff for the specified patch]:patch:_quilt_series' \
       '--combine[create a combined diff for all patches between this patch and the patch specified with -P]:patch:_quilt_series' \
       '(-P -z)--snapshot[diff against snapshot]' \
-      '--diff=[use the specified utility for generating the diff]:diff utility:_command_names -e' \
+      '--diff=[use the specified utility for generating the diff]:diff utility: _command_names -e' \
       '--sort[sort files by name]' \
       '*:files:_files' && return
   ;;

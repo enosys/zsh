@@ -19,5 +19,5 @@ _arguments : \
     '-jdb[enable remote java debugging]::port [4444]:_ports' \
     '-r[start MATLAB and execute the MATLAB_command]:MATLAB_command:' \
     '-logfile[copy any command window output to a file]:log file:_files' \
-    '-D-:debugger:_command_names -e' \
+    '-D-:debugger: _command_names -e' \
     '-nouserjavapath[ignore custom javaclasspath.txt and javalibrarypath.txt files]'

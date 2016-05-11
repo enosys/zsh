@@ -24,7 +24,7 @@ _arguments -C -S \
   '(-)--help[display usage info]' \
   '(--verbose -v)'{--verbose,-v}'[verbose output]' \
   '(--raw -r)'{--raw,-r}'[be very verbose]' \
-  '(--pager -P)'{--pager=,-P+}'[specify pager]:program:_command_names -e' \
+  '(--pager -P)'{--pager=,-P+}'[specify pager]:program: _command_names -e' \
   '--pipesize=[specify buffer size for pipelining commands]:buffer size:' \
   '--client=[specify additional text to send to server]:client text' \
   '--debug=[set a debug flag]:debug flag:(verbose raw scan parse pipe serial time)' \
