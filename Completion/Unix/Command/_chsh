@@ -2,7 +2,7 @@
 case $OSTYPE in
 (darwin*|*bsd*)
   _arguments : \
-      '-s[Specify user login shell]:shell:(${(Z+Cn+)"$(</etc/shells)"})' \
+      '-s[Specify user login shell]:shell: _shells false nologin' \
       "-l[Specify location of user]:node:" \
       "-u[Specify authentication name]:auth user:" \
       "1:user name:_users"
@@ -11,10 +11,9 @@ case $OSTYPE in
   if { =chsh -v } >&/dev/null
   then
       local -a opts shells
-      shells=( $(=chsh -l) )
       _arguments : \
-	  "(-)-s[Specify your login shell]:shell:($shells)" \
-	  "(-)--shell[Specify your login shell]:shell:($shells)" \
+	  "(-)-s[Specify your login shell]:shell: _shells false nologin" \
+	  "(-)--shell[Specify your login shell]:shell: _shells false nologin" \
 	  "(-)-l[Print shells in /etc/shells]" \
 	  "(-)--list-shells[Print shells in /etc/shells]" \
 	  "(-)-u[Print a usage message and exit]" \
@@ -34,7 +33,7 @@ case $OSTYPE in
   # the /etc/shells listing for -s or --shell even when the description
   # of that option has been pulled from the GNU --help output.
   [[ $words[CURRENT-1] = (-s|--shell) ]] &&
-    s="$s"'[ ]:shell:(${(Z+Cn+)"$(</etc/shells)"})'
+    s="$s"'[ ]:shell: _shells false nologin'
   _arguments : $s "1:user name:_users" --
   ;;
 esac

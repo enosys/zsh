@@ -1,0 +1,8 @@
+#compdef -value-,EDITOR,-default- -value-,GIT_EDITOR,-default- -value-,SYSTEMD_EDITOR,-default- -value-,VISUAL,-default-
+
+local editors=(
+    ${EDITOR:t} ${GIT_EDITOR:t} ${SYSTEMD_EDITOR:t} ${VISUAL:t}
+    emacs gedit gvim kate nano nvim vi vim
+)
+
+_suggested_commands -t editors -d editor -- $editors "$@"

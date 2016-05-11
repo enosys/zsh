@@ -5,7 +5,7 @@ _xt_arguments \
   +{altfont,base,browser,cr,debug,density,gamma,gspalette,hl,icongeometry,interpreter,margin,mfmode,offsets,p,paper,shrink,S,sidemargin,topmargin,xoffset,yoffset,grid{1,2,3},mgs{,1,2,3,4,5}} \
   '-altfont:default font' \
   '-base:base URL' \
-  '-browser:WWW browser: _command_names -e' \
+  '-browser:WWW browser: _browsers' \
   '-cr:cursor color:_x_color' \
   '-debug:debugging bitmask:((1\:bitmaps 2\:dvi\ translation 4\:pk\ reading 8\:batch\ operation 16\:events 32\:file\ opening 64\:PostScript\ communication 128\:Kpathsea\ statistics 256\:Kpathsea\ hash\ table\ lookups 512\:Kpathsea\ path\ definitions 1024\:Kpathsea\ path\ expansion 2048\:Kpathsea\ searches))' \
   '-density:font shrink density' \

@@ -1,0 +1,8 @@
+#compdef -value-,SHELL,-default-
+
+# Complete shells from /etc/shells, plus try some common shells for good measure.
+
+local shells=( ${SHELL:t} bash csh dash fish ksh mksh rc sh tcsh zsh )
+[[ -r /etc/shells ]] && shells+=( ${${(Z:Cn:)"$(</etc/shells)"}:t} )
+
+_suggested_commands -t shells -d shell -- $shells "$@"

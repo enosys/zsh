@@ -1,0 +1,8 @@
+#compdef -value-,PAGER,-default- -value-,GIT_PAGER,-default- -value-,SYSTEMD_PAGER,-default-
+
+local pagers=(
+    ${PAGER:t} ${GIT_PAGER:t} ${SYSTEMD_PAGER:t}
+    cat less lnav more most pg
+)
+
+_suggested_commands -t pagers -d pager -- $pager "$@"

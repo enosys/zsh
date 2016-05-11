@@ -1,17 +1,11 @@
 #compdef useradd usermod groupadd groupmod
 
-local args shells home=${${words[(r)-D]:+b}:-d} sun redhat
+local args home=${${words[(r)-D]:+b}:-d} sun redhat
 
 [[ -e /etc/redhat-release || -e /etc/mandrake-release ]]
 redhat=$?
 
 if [[ $service = user* ]]; then
-  if [[ -r /etc/shells ]]; then
-    shells=( ${${(f)"$(</etc/shells)"}:#\#*} )
-  else
-    shells=( ${(M)commands:#*/(|[abckz]|tc|ba)sh} )
-  fi
-
   args=(
     '(-D)-c+[comment]:comment'
     "(-D)-${home}+[home directory]:home directory:_directories -W /"
@@ -19,7 +13,7 @@ if [[ $service = user* ]]; then
     '(-D)-f+[specify inactive days]:inactive days'
     '(-D)-g+[initial group]:initial group:_groups'
     '(-D)-G+[supplementary groups]:supplementary group:_groups -S,'
-    "(-D)-s+[shell]:shell:( $shells /bin/false )"
+    '(-D)-s+[shell]:shell: _shells false nologin'
     '(-D -M)-m[create home directory]'
     '(-D)-u[uid]:uid'
     '(-D)-o[allow non unique uid]'
